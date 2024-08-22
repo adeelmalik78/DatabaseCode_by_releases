@@ -78,7 +78,7 @@ Here is the entire directory structure of this repo. There are schema subdirecto
 
 
 ## Changelog files
-Note that there is a [rootchangelog.xml](sqlcode/rootchangelog.xml) which serves as the entry point changelog for Liquibase (as specified in [liquibase.properties](liquibase.properties) file). This file points to changelog.xml file in each release directory:
+Note that there is a [rootchangelog.xml](sqlcode/rootchangelog.xml) which serves as the entry point changelog for Liquibase (as specified in [liquibase.properties](liquibase.properties) file). This file points to `changelog.xml` file in each release directory:
 ```xml
   <include file="1.0/changelog.xml" relativeToChangelogFile="true"/>
   <include file="1.1/changelog.xml" relativeToChangelogFile="true"/>
@@ -88,7 +88,7 @@ Note that there is a [rootchangelog.xml](sqlcode/rootchangelog.xml) which serves
   <include file="3.0/changelog.xml" relativeToChangelogFile="true"/>
 ```
 
-Changelog.xml file in each release directory points to a changelog.xml file in each schema directory:
+`changelog.xml` file in each release directory points to a changelog.xml file in each schema directory:
 ```xml
   <include file="schema1/changelog.xml" relativeToChangelogFile="true"/>
   <include file="schema2/changelog.xml" relativeToChangelogFile="true"/>

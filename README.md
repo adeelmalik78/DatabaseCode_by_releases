@@ -15,83 +15,151 @@ Here is the high-level overview of the directory structure. Note that there is a
     ├── 2.1
     ├── 2.2
     ├── 3.0
-    └── rootchangelog.xml
+    └── rootchangelog.yaml
 ```
 
-Here is the entire directory structure of this repo. There are schema subdirectories in each release directory. And each schema subdirectory has its own changelog file (e.g., `schema1changelog.xml`). 
+Here is the entire directory structure of this repo. There are schema subdirectories in each release directory. And each schema subdirectory has its own changelog file (e.g., `schema1changelog.yaml`). 
 ```
 .
 ├── README.md
 ├── liquibase.properties
 └── sqlcode
     ├── 1.0
-    │   ├── changelog.xml
+    │   ├── changelog.yaml
     │   ├── schema1
-    │   │   └── changelog.xml
+    │   │   └── changelog.yaml
     │   ├── schema2
-    │   │   └── changelog.xml
+    │   │   └── changelog.yaml
     │   └── schema3
-    │       └── changelog.xml
+    │       └── changelog.yaml
     ├── 1.1
-    │   ├── changelog.xml
+    │   ├── changelog.yaml
     │   ├── schema1
-    │   │   └── changelog.xml
+    │   │   └── changelog.yaml
     │   ├── schema2
-    │   │   └── changelog.xml
+    │   │   └── changelog.yaml
     │   └── schema3
-    │       └── changelog.xml
+    │       └── changelog.yaml
     ├── 2.0
-    │   ├── changelog.xml
+    │   ├── changelog.yaml
     │   ├── schema1
-    │   │   └── changelog.xml
+    │   │   └── changelog.yaml
     │   ├── schema2
-    │   │   └── changelog.xml
+    │   │   └── changelog.yaml
     │   └── schema3
-    │       └── changelog.xml
+    │       └── changelog.yaml
     ├── 2.1
-    │   ├── changelog.xml
+    │   ├── changelog.yaml
     │   ├── schema1
-    │   │   └── changelog.xml
+    │   │   └── changelog.yaml
     │   ├── schema2
-    │   │   └── changelog.xml
+    │   │   └── changelog.yaml
     │   └── schema3
-    │       └── changelog.xml
+    │       └── changelog.yaml
     ├── 2.2
-    │   ├── changelog.xml
+    │   ├── changelog.yaml
     │   ├── schema1
-    │   │   └── changelog.xml
+    │   │   └── changelog.yaml
     │   ├── schema2
-    │   │   └── changelog.xml
+    │   │   └── changelog.yaml
     │   └── schema3
-    │       └── changelog.xml
+    │       └── changelog.yaml
     ├── 3.0
-    │   ├── changelog.xml
+    │   ├── changelog.yaml
     │   ├── schema1
-    │   │   └── changelog.xml
+    │   │   └── changelog.yaml
     │   ├── schema2
-    │   │   └── changelog.xml
+    │   │   └── changelog.yaml
     │   └── schema3
-    │       └── changelog.xml
-    └── rootchangelog.xml
+    │       └── changelog.yaml
+    └── rootchangelog.yaml
 ```
 
 
 
 ## Changelog files
-Note that there is a [rootchangelog.xml](sqlcode/rootchangelog.xml) which serves as the entry point changelog for Liquibase (as specified in [liquibase.properties](liquibase.properties) file). This file points to `changelog.xml` file in each release directory:
-```xml
-  <include file="1.0/changelog.xml" relativeToChangelogFile="true"/>
-  <include file="1.1/changelog.xml" relativeToChangelogFile="true"/>
-  <include file="2.0/changelog.xml" relativeToChangelogFile="true"/>
-  <include file="2.1/changelog.xml" relativeToChangelogFile="true"/>
-  <include file="2.2/changelog.xml" relativeToChangelogFile="true"/>
-  <include file="3.0/changelog.xml" relativeToChangelogFile="true"/>
+Note that there is a [rootchangelog.yaml](sqlcode/rootchangelog.yaml) which serves as the entry point changelog for Liquibase (as specified in [liquibase.properties](liquibase.properties) file). This file points to `changelog.yaml` file in each release directory:
+```yaml
+databaseChangeLog:
+
+- include:
+    file: 1.0/changelog.yaml
+    relativeToChangelogFile: true
+
+- include:
+    file: 1.1/changelog.yaml
+    relativeToChangelogFile: true
+
+- include:
+    file: 2.0/changelog.yaml
+    relativeToChangelogFile: true
+
+- include:
+    file: 2.1/changelog.yaml
+    relativeToChangelogFile: true
+
+- include:
+    file: 2.2/changelog.yaml
+    relativeToChangelogFile: true
+
+- include:
+    file: 3.0/changelog.yaml
+    relativeToChangelogFile: true
+
 ```
 
-`changelog.xml` file in each release directory points to a changelog.xml file in each schema directory:
-```xml
-  <include file="schema1/changelog.xml" relativeToChangelogFile="true"/>
-  <include file="schema2/changelog.xml" relativeToChangelogFile="true"/>
-  <include file="schema3/changelog.xml" relativeToChangelogFile="true"/>
+`changelog.yaml` file in each release directory points to a changelog.yaml file in each schema directory:
+```yaml
+databaseChangeLog:
+
+- include:
+    file: schema1/changelog.yaml
+    relativeToChangelogFile: true
+
+- include:
+    file: schema2/changelog.yaml
+    relativeToChangelogFile: true
+
+- include:
+    file: schema3/changelog.yaml
+    relativeToChangelogFile: true
 ```
 
+`changelog.yaml` file in each release/schemaX directory is configured with changesets using [sqlFile](https://docs.liquibase.com/change-types/sql-file.html) change type. You would provide `script1`, `script2` or `script3` in each changeset:
+```yaml
+- changeSet:
+    id: script1
+    author: nvoxland
+    changes:
+    - sqlFile:
+        path: script1.sql
+        relativeToChangelogFile: true
+    - rollback:
+        - sqlFile:
+            path: script1-rollback.sql
+            relativeToChangelogFile: true
+
+- changeSet:
+    id: script2
+    author: nvoxland
+    changes:
+    - sqlFile:
+        path: script2.sql
+        relativeToChangelogFile: true
+    - rollback:
+        - sqlFile:
+            path: script2-rollback.sql
+            relativeToChangelogFile: true
+
+- changeSet:
+    id: script2
+    author: nvoxland
+    changes:
+    - sqlFile:
+        path: script2.sql
+        relativeToChangelogFile: true
+    - rollback:
+        - sqlFile:
+            path: script2-rollback.sql
+            relativeToChangelogFile: true
+```

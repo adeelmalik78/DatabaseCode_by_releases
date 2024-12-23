@@ -1,7 +1,5 @@
 databaseChangeLog:
 
-# Sequences
-
 - changeSet:
     id: actor_actor_id_seq
     author: workshop-user
